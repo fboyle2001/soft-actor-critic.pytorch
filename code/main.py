@@ -42,6 +42,7 @@ def run():
 
     env = gym.make(args.env_id)
     # env = gym.wrappers.Monitor(env, f"./videos/", video_callable=lambda ep_id: ep_id%10 == 0, force=True)
+    print("Not wrapped")
 
     log_dir = os.path.join(
         'logs', args.env_id,
