@@ -11,7 +11,7 @@ def run():
     parser = argparse.ArgumentParser()
     parser.add_argument('--env_id', type=str, default='BipedalWalker-v3')
     parser.add_argument('--cuda', action='store_true')
-    parser.add_argument('--seed', type=int, default=0)
+    parser.add_argument('--seed', type=int, default=42)
     args = parser.parse_args()
 
     # You can define configs in the external json or yaml file.
