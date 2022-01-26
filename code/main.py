@@ -2,13 +2,14 @@ import os
 import argparse
 from datetime import datetime
 import gym
+from gym import wrappers
 
 from agent import SacAgent
 
 
 def run():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--env_id', type=str, default='HalfCheetah-v2')
+    parser.add_argument('--env_id', type=str, default='BipedalWalker-v3')
     parser.add_argument('--cuda', action='store_true')
     parser.add_argument('--seed', type=int, default=0)
     args = parser.parse_args()
@@ -40,6 +41,7 @@ def run():
     }
 
     env = gym.make(args.env_id)
+    env = gym.wrappers.Monitor(env, f"./videos/", video_callable=lambda ep_id: ep_id%10 == 0, force=True)
 
     log_dir = os.path.join(
         'logs', args.env_id,

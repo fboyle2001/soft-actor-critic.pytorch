@@ -11,7 +11,7 @@ from utils import grad_false
 
 def run():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--env_id', type=str, default='HalfCheetah-v2')
+    parser.add_argument('--env_id', type=str, default='Pendulum-v1')
     parser.add_argument('--log_name', type=str, default='sac-seed0-datetime')
     parser.add_argument('--cuda', action='store_true')
     parser.add_argument('--seed', type=int, default=0)
@@ -20,6 +20,7 @@ def run():
     log_dir = os.path.join('logs', args.env_id, args.log_name)
 
     env = gym.make(args.env_id)
+    env = gym.wrappers.Monitor(env, "./videos/", video_callable=lambda ep_id: ep_id%10 == 0, force=True)
     device = torch.device(
         "cuda" if args.cuda and torch.cuda.is_available() else "cpu")
 
@@ -28,7 +29,7 @@ def run():
         env.action_space.shape[0],
         hidden_units=[256, 256]).to(device)
 
-    policy.load(os.path.join(log_dir, 'model', 'policy.pth'))
+    # policy.load(os.path.join(log_dir, 'model', 'policy.pth'))
     grad_false(policy)
 
     def exploit(state):

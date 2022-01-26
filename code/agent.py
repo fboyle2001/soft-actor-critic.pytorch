@@ -167,7 +167,7 @@ class SacAgent:
 
             # ignore done if the agent reach time horizons
             # (set done=True only when the agent fails)
-            if episode_steps >= self.env._max_episode_steps:
+            if episode_steps >= self.env.spec.max_episode_steps:
                 masked_done = False
             else:
                 masked_done = done
@@ -196,9 +196,9 @@ class SacAgent:
                 for _ in range(self.updates_per_step):
                     self.learn()
 
-            if self.steps % self.eval_interval == 0:
-                self.evaluate()
-                self.save_models()
+            # if self.steps % self.eval_interval == 0:
+            #    self.evaluate()
+            #    self.save_models()
 
             state = next_state
 
@@ -229,12 +229,13 @@ class SacAgent:
 
         q1_loss, q2_loss, errors, mean_q1, mean_q2 =\
             self.calc_critic_loss(batch, weights)
-        policy_loss, entropies = self.calc_policy_loss(batch, weights)
+
 
         update_params(
             self.q1_optim, self.critic.Q1, q1_loss, self.grad_clip)
         update_params(
             self.q2_optim, self.critic.Q2, q2_loss, self.grad_clip)
+        policy_loss, entropies = self.calc_policy_loss(batch, weights)
         update_params(
             self.policy_optim, self.policy, policy_loss, self.grad_clip)
 
