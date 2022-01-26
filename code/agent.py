@@ -298,6 +298,7 @@ class SacAgent:
         # Policy objective is maximization of (Q + alpha * entropy) with
         # priority weights.
         policy_loss = torch.mean((- q - self.alpha * entropy) * weights)
+        print("AL", policy_loss.detach())
         return policy_loss, entropy
 
     def calc_entropy_loss(self, entropy, weights):
